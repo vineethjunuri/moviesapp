@@ -1,21 +1,19 @@
 import './index.css'
 
 const FailureView = props => {
-  const {onClickTryAgain} = props
-
+  const {onRetry} = props
+  const onClickRetry = () => {
+    onRetry()
+  }
   return (
-    <div className="failure-container">
+    <div className="failed-view">
       <img
-        src="https://res.cloudinary.com/dps34f4by/image/upload/v1647500780/alert-triangle_yp7fwc.png"
-        alt="failure"
-        height={35}
+        className="failed-image"
+        src="https://res.cloudinary.com/dyx9u0bif/image/upload/v1657426934/homepage-failure_egb8fl.png"
+        alt="failure view"
       />
-      <p className="failure-heading">Something went wrong, Please try again.</p>
-      <button
-        type="button"
-        className="failure-button"
-        onClick={onClickTryAgain}
-      >
+      <p className="failed-heading">Something went wrong. Please try again</p>
+      <button className="retry-btn" type="button" onClick={onClickRetry}>
         Try Again
       </button>
     </div>

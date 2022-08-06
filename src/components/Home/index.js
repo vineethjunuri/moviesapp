@@ -1,113 +1,103 @@
 import {Component} from 'react'
-import Cookies from 'js-cookie'
 
+import Cookies from 'js-cookie'
+import Loader from 'react-loader-spinner'
+// import {Link} from 'react-router-dom'
+// import {AiOutlineClose} from 'react-icons/ai'
+import HomePoster from '../HomePoster'
 import Header from '../Header'
-import LoadingView from '../LoadingView'
+import './index.css'
 import FailureView from '../FailureView'
 import TrendingNow from '../TrendingNow'
-import Footer from '../Footer'
-
-import './index.css'
 import Originals from '../Originals'
-import TopRatedMovies from '../TopRatedMovies'
+import Footer from '../Footer'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
-  failure: 'FAILURE',
   success: 'SUCCESS',
+  failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
 }
 
 class Home extends Component {
   state = {
+    initialPoster: {},
     apiStatus: apiStatusConstants.initial,
-    randomObject: {},
   }
 
   componentDidMount() {
-    this.getMoviePoster()
+    this.getHomePagePoster()
   }
 
-  onClickTryAgain = () => {
-    this.getMoviePoster()
-  }
-
-  getMoviePoster = async () => {
-    this.setState({apiStatus: apiStatusConstants.inProgress})
+  getHomePagePoster = async () => {
+    this.setState({
+      apiStatus: apiStatusConstants.inProgress,
+    })
     const jwtToken = Cookies.get('jwt_token')
-    const url = 'https://apis.ccbp.in/movies-app/originals'
+    const apiUrl = `https://apis.ccbp.in/movies-app/originals`
     const options = {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
     }
-    const response = await fetch(url, options)
+
+    const response = await fetch(apiUrl, options)
     if (response.ok === true) {
       const data = await response.json()
-      const arrayLength = data.results.length
-      const randomItem =
-        data.results[Math.floor(Math.random() * (arrayLength - 1))]
-
+      // console.log(data)
+      const fetchedDataLength = data.results.length
+      const randomPoster =
+        data.results[Math.floor(Math.random() * fetchedDataLength)]
       const updatedData = {
-        id: randomItem.id,
-        backdropPath: randomItem.backdrop_path,
-        title: randomItem.title,
-        overview: randomItem.overview,
+        id: randomPoster.id,
+        backdropPath: randomPoster.backdrop_path,
+        title: randomPoster.title,
+        overview: randomPoster.overview,
+        posterPath: randomPoster.poster_path,
       }
+      // console.log(updatedData)
       this.setState({
-        randomObject: {...updatedData},
+        initialPoster: {...updatedData},
         apiStatus: apiStatusConstants.success,
+      })
+    } else {
+      this.setState({
+        apiStatus: apiStatusConstants.failure,
       })
     }
   }
 
-  renderSuccessView = () => {
-    const {randomObject} = this.state
-    const {title, backdropPath, overview} = randomObject
+  onRetry = () => {
+    this.getHomePagePoster()
+  }
 
+  renderFailureView = () => <FailureView onRetry={this.onRetry} />
+
+  renderLoadingView = () => (
+    <div className="loader-container">
+      <Loader
+        testid="loader"
+        type="TailSpin"
+        height={35}
+        width={380}
+        color=" #D81F26"
+      />
+    </div>
+  )
+
+  renderSuccessView = () => {
+    const {initialPoster} = this.state
     return (
-      <div
-        style={{
-          backgroundImage: `url(${backdropPath})`,
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-        className="home-container"
-        alt={title}
-      >
-        <Header />
-        <div className="heading-container">
-          <h1 className="home-movie-heading">{title}</h1>
-          <p className="overview">{overview}</p>
-          <button className="home-button" type="button">
-            Play
-          </button>
-        </div>
-        <div>
-          <div className="img-bottom-style"> </div>
-        </div>
-      </div>
+      <>
+        {/* <p className="json">{JSON.stringify(homeVideos)}</p> */}
+        <HomePoster poster={initialPoster} />
+      </>
     )
   }
 
-  renderLoadingView = () => (
-    <div className="detail-loader">
-      <LoadingView testid="loader" style={{height: '100vh'}} />
-    </div>
-  )
-
-  renderFailureView = () => (
-    <div className="failure-view-container">
-      <FailureView onClickTryAgain={this.onClickTryAgain} />
-    </div>
-  )
-
-  renderHome = () => {
+  renderHomePoster = () => {
     const {apiStatus} = this.state
-
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.renderSuccessView()
@@ -115,6 +105,7 @@ class Home extends Component {
         return this.renderFailureView()
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
+
       default:
         return null
     }
@@ -122,24 +113,22 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="home-bg-container">
-        {this.renderHome()}
-        <h1 className="trending-heading">Trending Now</h1>
-        <div className="main-container">
-          <TrendingNow />
-        </div>
-        <h1 className="trending-heading">Top Rated</h1>
-        <div className="main-container">
-          <TopRatedMovies />
-        </div>
-        <h1 className="trending-heading">Originals</h1>
-        <div className="main-container">
-          <Originals />
+      <div className="root-container">
+        <Header />
+        <div className="home-sizes-container">{this.renderHomePoster()}</div>
+        <div>
+          <div>
+            <h1 className="trending-now-heading">Trending Now</h1>
+            <TrendingNow />
+          </div>
+          <div>
+            <h1 className="originals-heading">Originals</h1>
+            <Originals />
+          </div>
         </div>
         <Footer />
       </div>
     )
   }
 }
-
 export default Home

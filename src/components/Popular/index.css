@@ -1,54 +1,50 @@
-.popular-poster {
-  width: 140px;
-  margin: 8px 8px 8px 0px;
-  height: 160px;
-  border-radius: 8px;
+.main-popular-bg-black-container {
+  background-color: #131313;
 }
-.app-container {
-  background-color: #181818;
+
+.popular-result-container {
+  padding: 10px;
   height: 100vh;
-  overflow-y: scroll;
-}
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  height: 100%;
 }
 
-.react-slick-item {
-  background: transparent;
-}
-
-.slick-app-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.react-slick-heading {
-  color: #ffffff;
-  width: 80%;
-}
-
-@media (max-width: 767px) {
-  .react-slick-heading {
-    font-size: 20px;
-  }
-}
-
-.popular-container {
+.popular-ul-container {
   display: flex;
   flex-wrap: wrap;
-  padding-left: 25px;
-  padding-right: 15px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0px;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  list-style-type: none;
 }
-.popular-item {
-  display: table;
-  float: left;
-  width: 33.33%;
-  padding: 10px;
+.popular-li-item {
+  padding: 5px;
+}
+/* .popular-poster {
+  height: 250px;
+  width: 180px;
+  border-radius: 8px;
+} */
+.popular-poster {
+  height: 100px;
+  width: 90px;
+  border-radius: 8px;
+}
+@media screen and (min-width: 768px) {
+  .popular-poster {
+    height: 250px;
+    width: 180px;
+    border-radius: 8px;
+  }
+  .popular-li-item {
+    padding: 10px;
+  }
+}
+.explore-movies-here {
+  color: #ffffff;
+  padding-left: 30px;
+  margin-bottom: 10px;
 }

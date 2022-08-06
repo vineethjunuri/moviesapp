@@ -1,48 +1,81 @@
-.not-found-app-container {
-  background-image: url('https://res.cloudinary.com/dps34f4by/image/upload/v1647163863/snow-removal-machine-working-high-ski-slope-snowstorm_454047-2149_1_izjhpv.jpg');
-  height: 100vh;
-  width: 100%;
-  background-size: cover;
+.not-found-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #181818;
+  /* min-height: 92vh; */
+  /* margin-top: 160px; */
+  /* margin-bottom: 60px; */
+  overflow-y: auto;
+  margin: auto;
 }
-.not-found-heading {
-  font-family: HK Grotesk;
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 52px;
-  letter-spacing: 0px;
-  text-align: center;
-  color: #ffffff;
+
+@media screen and (min-width: 768px) {
+  .not-found-container {
+    /* margin-top: 120px; */
+    margin-bottom: 0px;
+  }
 }
-.not-found-description {
-  font-family: HK Grotesk;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: #ffffff;
-  width: 250px;
-}
-.not-found-button {
-  width: 125px;
-  height: 24px;
-  left: 0px;
-  top: 0px;
-  justify-content: center;
+
+.not-found-videos-view {
   display: flex;
-  align-self: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+}
+
+/* .not-found-videos-img {
+  width: 200px;
+  margin-top: 200px;
+} */
+
+@media screen and (min-width: 768px) {
+  .not-found-videos-img {
+    width: 450px;
+    margin-top: 0px;
+  }
+}
+
+.not-found-videos-heading {
+  font-family: Roboto;
+  font-size: 25px;
+  color: #f1f5f9;
+  text-align: center;
+}
+
+.not-found-videos-note {
+  font-family: Roboto;
+  font-size: 18px;
+  color: #f1f5f9;
+  text-align: center;
+}
+.not-found-container {
+  background-image: url('https://res.cloudinary.com/dyx9u0bif/image/upload/v1657093957/snow-removal-machine-working-high-ski-slope-snowstorm_454047-2149_1_xgxo4o.png');
+  min-height: 100vh;
+  background-size: 100% 100%;
+  /* background-size: cover; */
+}
+.not-found-comp-btn {
   font-family: 'HK Grotesk';
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
-  align-items: center;
   color: #171f46;
-  text-align: center;
+  width: 127px;
+  height: 48px;
+  background: #ffffff;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.not-found-videos-note {
+  margin: 10px 0px;
+}
+.not-found-videos-heading {
+  margin: 10px 0px;
 }

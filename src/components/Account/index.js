@@ -6,7 +6,10 @@ import './index.css'
 const Account = props => {
   const username = localStorage.getItem('username')
   const password = localStorage.getItem('password')
-  const encrypted = '*'.repeat(password.length)
+  // to convert into astric we can use the repeat function
+  // syntax : string.repeat(count);
+
+  const passwordInAsterisk = '*'.repeat(password.length)
   const onClickLogout = () => {
     const {history} = props
     Cookies.remove('jwt_token')
@@ -14,31 +17,30 @@ const Account = props => {
   }
 
   return (
-    <div className="app-container">
+    <div className="account-root-container">
       <Header />
-
-      <div className="account-section-container">
+      <div className="account-details-container">
         <h1 className="account-heading">Account</h1>
-        <hr className="line" />
-        <div className="membership-container">
-          <p className="membership-heading">Member ship</p>
+        <hr className="hr-line" />
+        <div className="member-details-container">
+          <p className="membership-heading">Membership</p>
           <div>
-            <p className="username-heading">{username}@gmail.com</p>
-            <p className="password-heading">Password:{encrypted}</p>
+            <p className="membership-email">{username}@gmail.com</p>
+            <p className="membership-password">Password:{passwordInAsterisk}</p>
           </div>
         </div>
-        <hr className="line" />
+        <hr className="hr-line" />
         <div className="membership-container">
-          <p className="membership-heading">Plan Details</p>
-          <p className="username-heading">Premium</p>
+          <p className="plan-details">Plan Details</p>
+          <p className="membership-premium">Premium</p>
           <p className="ultra-hd">Ultra HD</p>
         </div>
-        <hr className="line" />
-        <div className="logout-button-container">
+        <hr className="hr-line" />
+        <div className="account-logout-container">
           <button
-            type="button"
             onClick={onClickLogout}
-            className="logout-button"
+            className="account-logout"
+            type="button"
           >
             Logout
           </button>

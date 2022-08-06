@@ -1,71 +1,94 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
+import Loader from 'react-loader-spinner'
+import SlickMovieCard from '../SlickMovieCard'
+
+import './index.css'
 import FailureView from '../FailureView'
-import LoadingView from '../LoadingView'
-import MovieCard from '../MovieCard'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
-  failure: 'FAILURE',
   success: 'SUCCESS',
+  failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
 }
 
 class Originals extends Component {
   state = {
+    originals: [],
     apiStatus: apiStatusConstants.initial,
-    originalsData: [],
   }
 
   componentDidMount() {
-    this.getOriginalsMovies()
+    this.getOriginals()
   }
 
-  onClickTryAgain = () => {
-    this.getOriginalsMovies()
-  }
-
-  getOriginalsMovies = async () => {
-    this.setState({apiStatus: apiStatusConstants.inProgress})
+  getOriginals = async () => {
+    this.setState({
+      apiStatus: apiStatusConstants.inProgress,
+    })
     const jwtToken = Cookies.get('jwt_token')
-    const url = 'https://apis.ccbp.in/movies-app/originals'
+    const apiUrl = `https://apis.ccbp.in/movies-app/originals`
     const options = {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
     }
-    const response = await fetch(url, options)
+
+    const response = await fetch(apiUrl, options)
     if (response.ok === true) {
       const data = await response.json()
+      // console.log(data)
       const updatedData = data.results.map(each => ({
         id: each.id,
         posterPath: each.poster_path,
         title: each.title,
       }))
+      // console.log(updatedData)
       this.setState({
-        originalsData: updatedData,
+        originals: updatedData,
         apiStatus: apiStatusConstants.success,
       })
     } else {
-      this.setState({apiStatus: apiStatusConstants.failure})
+      this.setState({
+        apiStatus: apiStatusConstants.failure,
+      })
     }
   }
 
-  renderFailureView = () => (
-    <FailureView onClickTryAgain={this.onClickTryAgain} />
+  onRetry = () => {
+    this.getOriginals()
+  }
+
+  renderFailureView = () => <FailureView onRetry={this.onRetry} />
+
+  renderLoadingView = () => (
+    <div className="loader-container">
+      <Loader
+        testid="loader"
+        type="TailSpin"
+        height={35}
+        width={380}
+        color=" #D81F26"
+      />
+    </div>
   )
 
-  renderLoadingView = () => <LoadingView />
-
   renderSuccessView = () => {
-    const {originalsData} = this.state
-    return <MovieCard movies={originalsData} />
+    const {originals} = this.state
+    return (
+      <>
+        {/* <p className="json">{JSON.stringify(trendingNow)}</p> */}
+        {/* <HomeVideos homeVideos={homeVideos} /> */}
+
+        <SlickMovieCard movies={originals} />
+      </>
+    )
   }
 
   renderOriginals = () => {
     const {apiStatus} = this.state
-
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.renderSuccessView()
@@ -73,6 +96,7 @@ class Originals extends Component {
         return this.renderFailureView()
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
+
       default:
         return null
     }
@@ -84,5 +108,4 @@ class Originals extends Component {
     )
   }
 }
-
 export default Originals
