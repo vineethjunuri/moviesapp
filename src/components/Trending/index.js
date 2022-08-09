@@ -17,20 +17,20 @@ const apiConstants = {
   failure: 'FAILURE',
 }
 
-class Originals extends Component {
+class Trending extends Component {
   state = {
     apiStatus: apiConstants.initial,
-    allTrendingItemVideos: [],
+    allTrendingVideos: [],
   }
 
   componentDidMount() {
-    this.getOriginalVideos()
+    this.getAllVideos()
   }
 
-  getOriginalVideos = async () => {
+  getAllVideos = async () => {
     this.setState({apiStatus: apiConstants.inProgress})
 
-    const url = 'https://apis.ccbp.in/movies-app/originals'
+    const url = 'https://apis.ccbp.in/movies-app/trending-movies'
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -42,7 +42,6 @@ class Originals extends Component {
     const response = await fetch(url, options)
     if (response.ok) {
       const data = await response.json()
-      console.log(data)
 
       const updatedVideosList = data.results.map(each => ({
         id: each.id,
@@ -54,7 +53,7 @@ class Originals extends Component {
 
       this.setState({
         apiStatus: apiConstants.success,
-        allTrendingItemVideos: updatedVideosList,
+        allTrendingVideos: updatedVideosList,
       })
     } else {
       this.setState({apiStatus: apiConstants.failure})
@@ -66,12 +65,12 @@ class Originals extends Component {
       <MovieContext.Consumer>
         {value => {
           const {username} = value
-          console.log('username from originals', {username})
+          console.log('username from trending', {username})
 
           const renderLoader = () => <LoadingElement />
 
           const renderSuccessView = () => {
-            const {allTrendingItemVideos} = this.state
+            const {allTrendingVideos} = this.state
 
             const settings = {
               dots: false,
@@ -107,7 +106,7 @@ class Originals extends Component {
             return (
               <ul>
                 <Slider {...settings} className="slick-container">
-                  {allTrendingItemVideos.map(each => (
+                  {allTrendingVideos.map(each => (
                     <div className="slick-item" key={each.id}>
                       <li key={each.id}>
                         <Link to={`/movies/${each.id}`} key={each.id}>
@@ -126,7 +125,7 @@ class Originals extends Component {
           }
 
           const renderMovieItem = () => {
-            this.getOriginalVideos()
+            this.getAllVideos()
           }
 
           const renderFailureView = () => (
@@ -164,10 +163,10 @@ class Originals extends Component {
             }
           }
 
-          return <div testid="originals">{getResult()}</div>
+          return <div testid="trending">{getResult()}</div>
         }}
       </MovieContext.Consumer>
     )
   }
 }
-export default Originals
+export default Trending

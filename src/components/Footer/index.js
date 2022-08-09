@@ -1,23 +1,26 @@
-import {FaGoogle, FaTwitter, FaInstagram, FaYoutube} from 'react-icons/fa'
+import {FaGoogle, FaTwitter, FaYoutube, FaInstagram} from 'react-icons/fa'
+import MovieContext from '../../context/MovieContext'
+
 import './index.css'
 
 const Footer = () => (
-  <>
-    <div className="footer-container">
-      <button type="button" className="icon-button">
-        <FaGoogle />
-      </button>
-      <button type="button" className="icon-button">
-        <FaTwitter />
-      </button>
-      <button type="button" className="icon-button">
-        <FaInstagram />
-      </button>
-      <button type="button" className="icon-button">
-        <FaYoutube />
-      </button>
-    </div>
-    <p className="contact-us-footer">Contact us </p>
-  </>
+  <MovieContext.Consumer>
+    {value => {
+      const {username} = value
+      console.log(username)
+
+      return (
+        <div className="footer-container">
+          <div>
+            <FaGoogle size={30} className="footer-icon" />
+            <FaTwitter size={30} className="footer-icon" />
+            <FaYoutube size={30} className="footer-icon" />
+            <FaInstagram size={30} className="footer-icon" />
+          </div>
+          <p className="contact-heading">Contact us</p>
+        </div>
+      )
+    }}
+  </MovieContext.Consumer>
 )
 export default Footer

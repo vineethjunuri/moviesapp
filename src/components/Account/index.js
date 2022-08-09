@@ -1,54 +1,60 @@
-import Cookies from 'js-cookie'
+import MovieContext from '../../context/MovieContext'
 import Header from '../Header'
 import Footer from '../Footer'
+
 import './index.css'
 
-const Account = props => {
-  const username = localStorage.getItem('username')
-  const password = localStorage.getItem('password')
-  // to convert into astric we can use the repeat function
-  // syntax : string.repeat(count);
+const Account = props => (
+  <MovieContext.Consumer>
+    {value => {
+      const {username, password, triggerLogout} = value
 
-  const passwordInAsterisk = '*'.repeat(password.length)
-  const onClickLogout = () => {
-    const {history} = props
-    Cookies.remove('jwt_token')
-    history.replace('/login')
-  }
+      const onClickLogout = () => {
+        triggerLogout(props)
+      }
 
-  return (
-    <div className="account-root-container">
-      <Header />
-      <div className="account-details-container">
-        <h1 className="account-heading">Account</h1>
-        <hr className="hr-line" />
-        <div className="member-details-container">
-          <p className="membership-heading">Membership</p>
-          <div>
-            <p className="membership-email">{username}@gmail.com</p>
-            <p className="membership-password">Password:{passwordInAsterisk}</p>
+      const hiddenPassword = '*'.repeat(password.length)
+
+      return (
+        <>
+          <div className="account-container" testid="account">
+            <Header />
+            <div className="account-container-2">
+              <h1>
+                Account
+                <hr />
+              </h1>
+
+              <div className="account-element">
+                <p className="header-element">Member ship</p>
+                <div>
+                  <p>{username}@gmail.com</p>
+                  <p>Password: {hiddenPassword} </p>
+                </div>
+              </div>
+              <hr />
+
+              <div className="account-element">
+                <p className="header-element">Plan Details</p>
+                <div>
+                  <p>Premium</p>
+                  <p className="ultra-hd">Ultra HD</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="logout-button"
+                onClick={onClickLogout}
+              >
+                Logout
+              </button>
+            </div>
+
+            <Footer />
           </div>
-        </div>
-        <hr className="hr-line" />
-        <div className="membership-container">
-          <p className="plan-details">Plan Details</p>
-          <p className="membership-premium">Premium</p>
-          <p className="ultra-hd">Ultra HD</p>
-        </div>
-        <hr className="hr-line" />
-        <div className="account-logout-container">
-          <button
-            onClick={onClickLogout}
-            className="account-logout"
-            type="button"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-      <Footer />
-    </div>
-  )
-}
-
+        </>
+      )
+    }}
+  </MovieContext.Consumer>
+)
 export default Account
